@@ -1,5 +1,7 @@
 package rest;
 
+import com.google.gson.Gson;
+import dtos.user.PrivateUserDto;
 import entities.User;
 import entities.Role;
 
@@ -23,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 import utils.Populate;
 
-public class AuthenticationEndpointTest {
+public class AuthenticationAndUserTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -286,6 +288,46 @@ public class AuthenticationEndpointTest {
                 .when()
                 .get("/me").then()
                 .statusCode(403);
+    }
+
+    @Test
+    public void updateUser() {
+        PrivateUserDto updatedUser = PrivateUserDto.builder()
+                .username("user")
+
+                .displayName("A cool new display name")
+                .build();
+
+        login("user", "test");
+
+        // See who I am (from me resource).
+        given()
+                .contentType("application/json")
+                .header("x-access-token", securityToken)
+                .when()
+                .get("/me").then()
+                .statusCode(200)
+                .body("displayName", equalTo(null));
+
+        // Update me.
+        given()
+                .contentType("application/json")
+                .header("x-access-token", securityToken)
+                .when()
+                .body(new Gson().toJson(updatedUser))
+                .put("/user").then()
+                .statusCode(200)
+                .body("displayName", equalTo("A cool new display name"));
+
+        // See who I am again (from me resource).
+        given()
+                .contentType("application/json")
+                .header("x-access-token", securityToken)
+                .when()
+                .get("/me").then()
+                .statusCode(200)
+                .body("displayName", equalTo("A cool new display name"));
+
     }
 
 }

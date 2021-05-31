@@ -2,6 +2,8 @@ package dtos.user;
 
 import entities.Role;
 import entities.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -15,12 +17,16 @@ import java.util.stream.Collectors;
  * */
 
 @Data
+@Builder
+@AllArgsConstructor
 public class PrivateUserDto {
     private String username;
+    private String displayName;
     private List<String> roles;
 
     public PrivateUserDto(User user) {
         this.username = user.getUsername();
+        this.displayName = user.getDisplayName();
         this.roles = user.getRoles().stream().map(Object::toString).collect(Collectors.toList());
     }
 

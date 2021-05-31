@@ -62,6 +62,30 @@ public class UserFacade {
         return new PrivateUserDto(user);
     }
 
+    public PrivateUserDto updateUser(PrivateUserDto updatedUser) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            // Replace all accessible entries for our user.
+            User user = _get(updatedUser.getUsername());
+            if (user == null)
+                throw new WebApplicationException("Unknown user (" + updatedUser.getUsername() + ") requested.", 404);
+
+            // Only replace posted fields (check if null first).
+            if(!Strings.isNullOrEmpty(updatedUser.getDisplayName()))
+                user.setDisplayName(updatedUser.getDisplayName());
+
+            em.getTransaction().begin();
+            em.merge(user);
+            em.getTransaction().commit();
+
+            return getPrivate(user.getUsername());
+        }
+        finally {
+            em.close();
+        }
+    }
+
     public PrivateUserDto getPrivate(String username) {
         User user = _get(username);
         if(user == null)
