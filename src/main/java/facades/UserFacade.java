@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
 
+import org.apache.commons.lang3.StringUtils;
 import security.errorhandling.AuthenticationException;
 
 import java.util.ArrayList;
@@ -72,8 +73,14 @@ public class UserFacade {
                 throw new WebApplicationException("Unknown user (" + updatedUser.getUsername() + ") requested.", 404);
 
             // Only replace posted fields (check if null first).
-            if(!Strings.isNullOrEmpty(updatedUser.getDisplayName()))
-                user.setDisplayName(updatedUser.getDisplayName());
+
+            if(updatedUser.getDisplayName() != null) {
+                if(StringUtils.isEmpty(updatedUser.getDisplayName()))
+                    user.setDisplayName(null);
+                else
+                    user.setDisplayName(updatedUser.getDisplayName());
+            }
+
 
             em.getTransaction().begin();
             em.merge(user);
