@@ -7,6 +7,8 @@ import entities.Role;
 
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
+
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import java.net.URI;
@@ -16,7 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import static org.hamcrest.Matchers.equalTo;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,7 +115,7 @@ public class AuthenticationAndUserTest {
                 //.when().post("/api/login")
                 .when().post("/authentication/login")
                 .then()
-                .statusCode(403)
+                .statusCode(401)
                 .body("message", equalTo("Username and password do not match."));
     }
 
@@ -161,7 +163,7 @@ public class AuthenticationAndUserTest {
                 //.when().post("/api/login")
                 .when().post("/authentication/login")
                 .then()
-                .statusCode(403)
+                .statusCode(401)
                 .body("message", equalTo("Username and password do not match."));
     }
 
@@ -243,8 +245,8 @@ public class AuthenticationAndUserTest {
                 .contentType("application/json")
                 .when()
                 .get("/info/user").then()
-                .statusCode(403)
-                .body("code", equalTo(403))
+                .statusCode(401)
+                .body("code", equalTo(401))
                 .body("message", equalTo("Not authenticated - do login"));
     }
 
@@ -255,8 +257,8 @@ public class AuthenticationAndUserTest {
                 .contentType("application/json")
                 .when()
                 .get("/info/user").then()
-                .statusCode(403)
-                .body("code", equalTo(403))
+                .statusCode(401)
+                .body("code", equalTo(401))
                 .body("message", equalTo("Not authenticated - do login"));
     }
 
@@ -279,7 +281,7 @@ public class AuthenticationAndUserTest {
                 .header("x-access-token", "invalidToken")
                 .when()
                 .get("/me").then()
-                .statusCode(403);
+                .statusCode(401);
 
         // Given no token...
         given()
@@ -287,7 +289,7 @@ public class AuthenticationAndUserTest {
                 .accept(ContentType.JSON)
                 .when()
                 .get("/me").then()
-                .statusCode(403);
+                .statusCode(401);
     }
 
     @Test
@@ -307,7 +309,9 @@ public class AuthenticationAndUserTest {
                 .when()
                 .get("/me").then()
                 .statusCode(200)
-                .body("displayName", equalTo(null));
+                .body("displayName", equalTo(null))
+                .body("updatedAt", equalTo(null))
+                .body("createdAt", notNullValue());
 
         // Update me.
         given()
@@ -326,7 +330,9 @@ public class AuthenticationAndUserTest {
                 .when()
                 .get("/me").then()
                 .statusCode(200)
-                .body("displayName", equalTo("A cool new display name"));
+                .body("displayName", equalTo("A cool new display name"))
+                .body("updatedAt", notNullValue())
+                .body("createdAt", notNullValue());
 
     }
 

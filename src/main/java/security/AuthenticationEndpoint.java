@@ -49,7 +49,7 @@ public class AuthenticationEndpoint {
         } catch (JsonSyntaxException e) {
            throw new WebApplicationException("Bad request, expected: username, password", 400);
         } catch (AuthenticationException e) {
-          throw new WebApplicationException("Username and password do not match.", 403);
+          throw new WebApplicationException("Username and password do not match.", 401);
         }
     }
 
@@ -79,7 +79,7 @@ public class AuthenticationEndpoint {
             responseJson.addProperty("token", token);
             return Response.ok(new Gson().toJson(responseJson)).build();
         } catch (JOSEException ex) {
-            throw new WebApplicationException("User could not be authorized.", 403);
+            throw new WebApplicationException("User could not be authorized.", 401);
         }
     }
 

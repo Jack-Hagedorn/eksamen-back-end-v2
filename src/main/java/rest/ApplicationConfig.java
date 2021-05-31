@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
         resources.add(rest.UtilResource.class);
         resources.add(rest.MeResource.class);
         resources.add(rest.UserResource.class);
+        resources.add(rest.AdminResource.class);
         resources.add(rest.DemoResource.class);
         resources.add(rest.RenameMeResource.class);
         resources.add(rest.ExternalFetchResource.class);
