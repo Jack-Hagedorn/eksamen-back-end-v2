@@ -1,18 +1,24 @@
-package dtos;
+package dtos.user;
 
-import entities.Role;
 import entities.User;
 import lombok.Data;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *
+ * PublicUserDto provided public information regarding a user.
+ * This information could be e.g. used to display a public profile about a user.
+ *
+ * */
+
 @Data
-public class UserDTO {
+public class PublicUserDto {
     private String username;
     private List<String> roles;
 
-    public UserDTO(User user) {
+    public PublicUserDto(User user) {
         this.username = user.getUsername();
         this.roles = user.getRoles().stream().map(Object::toString).collect(Collectors.toList());
     }

@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 import utils.Populate;
 
-public class LoginEndpointTest {
+public class AuthenticationEndpointTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -80,14 +80,15 @@ public class LoginEndpointTest {
     private static String securityToken;
 
     //Utility method to login and set the returned securityToken
-    private static void login(String role, String password) {
-        String json = String.format("{username: \"%s\", password: \"%s\"}", role, password);
+    private static void login(String username, String password) {
+        String json = String.format("{username: \"%s\", password: \"%s\"}", username, password);
         securityToken = given()
                 .contentType("application/json")
                 .body(json)
                 //.when().post("/api/login")
-                .when().post("/login")
+                .when().post("/authentication/login")
                 .then()
+                .statusCode(200)
                 .extract().path("token");
         //System.out.println("TOKEN ---> " + securityToken);
     }
@@ -99,6 +100,67 @@ public class LoginEndpointTest {
     @Test
     public void serverIsRunning() {
         given().when().get("/info").then().statusCode(200);
+    }
+
+    @Test
+    public void userNotFoundLogin() {
+        String json = String.format("{username: \"%s\", password: \"%s\"}", "non_existing_user", "123");
+        given()
+                .contentType("application/json")
+                .body(json)
+                //.when().post("/api/login")
+                .when().post("/authentication/login")
+                .then()
+                .statusCode(403)
+                .body("message", equalTo("Username and password do not match."));
+    }
+
+    @Test
+    public void register() {
+        String jsonRegister = String.format("{username: \"%s\", password: \"%s\", passwordConfirm: \"%s\"}", "new_user", "test", "test");
+        given()
+                .contentType("application/json")
+                .body(jsonRegister)
+                .when().post("/authentication/register")
+                .then()
+                .statusCode(200);
+
+        login("new_user", "test");
+    }
+
+    @Test
+    public void registerUserAlreadyExists() {
+        String jsonRegister = String.format("{username: \"%s\", password: \"%s\"}, passwordConfirm: \"%s\"}", "user", "test", "test");
+        given()
+                .contentType("application/json")
+                .body(jsonRegister)
+                .when().post("/authentication/register")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    public void registerNonMatchingPasswords() {
+        String jsonRegister = String.format("{username: \"%s\", password: \"%s\"}, passwordConfirm: \"%s\"}", "new_user_7", "test", "tests");
+        given()
+                .contentType("application/json")
+                .body(jsonRegister)
+                .when().post("/authentication/register")
+                .then()
+                .statusCode(400);
+    }
+
+    @Test
+    public void incorrectPasswordLogin() {
+        String json = String.format("{username: \"%s\", password: \"%s\"}", "admin", "test123");
+        given()
+                .contentType("application/json")
+                .body(json)
+                //.when().post("/api/login")
+                .when().post("/authentication/login")
+                .then()
+                .statusCode(403)
+                .body("message", equalTo("Username and password do not match."));
     }
 
     @Test
@@ -194,6 +256,36 @@ public class LoginEndpointTest {
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
+    }
+
+    @Test
+    public void me() {
+        login("admin", "test");
+        given()
+                .contentType("application/json")
+                .accept(ContentType.JSON)
+                .header("x-access-token", securityToken)
+                .when()
+                .get("/me").then()
+                .statusCode(200)
+                .body("username", equalTo("admin"));
+
+        // Given an invalid token...
+        given()
+                .contentType("application/json")
+                .accept(ContentType.JSON)
+                .header("x-access-token", "invalidToken")
+                .when()
+                .get("/me").then()
+                .statusCode(403);
+
+        // Given no token...
+        given()
+                .contentType("application/json")
+                .accept(ContentType.JSON)
+                .when()
+                .get("/me").then()
+                .statusCode(403);
     }
 
 }

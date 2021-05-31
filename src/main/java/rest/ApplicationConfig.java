@@ -1,5 +1,7 @@
 package rest;
 
+import security.AuthenticationEndpoint;
+
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
@@ -25,11 +27,12 @@ public class ApplicationConfig extends Application {
         resources.add(errorhandling.GenericExceptionMapper.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
         resources.add(rest.UtilResource.class);
+        resources.add(rest.MeResource.class);
         resources.add(rest.DemoResource.class);
         resources.add(rest.RenameMeResource.class);
         resources.add(rest.ExternalFetchResource.class);
         resources.add(security.JWTAuthenticationFilter.class);
-        resources.add(security.LoginEndpoint.class);
+        resources.add(AuthenticationEndpoint.class);
         resources.add(security.RolesAllowedFilter.class);
         resources.add(security.errorhandling.AuthenticationExceptionMapper.class);
         resources.add(security.errorhandling.NotAuthorizedExceptionMapper.class);
