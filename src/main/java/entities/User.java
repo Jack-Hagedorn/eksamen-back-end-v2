@@ -1,10 +1,7 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.persistence.*;
 
@@ -37,6 +34,9 @@ public class User implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "fk_role")})
     private Set<Role> roles = new HashSet<>();
 
+    private Date createdAt;
+    private Date updatedAt;
+
     public User(String username, String password) {
         this.username = username;
         this.password = generateHashedPassword(password);
@@ -65,5 +65,15 @@ public class User implements Serializable {
 
     public List<String> getRolesAsStrings() {
         return roles.isEmpty() ? null : roles.stream().map(Object::toString).collect(Collectors.toList());
+    }
+
+    @PrePersist
+    private void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    private void onUpdate() {
+        this.updatedAt = new Date();
     }
 }

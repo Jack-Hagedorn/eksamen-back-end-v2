@@ -22,11 +22,15 @@ import java.util.stream.Collectors;
 public class PrivateUserDto {
     private String username;
     private String displayName;
+    private String createdAt;
+    private String updatedAt;
     private List<String> roles;
 
     public PrivateUserDto(User user) {
         this.username = user.getUsername();
         this.displayName = user.getDisplayName();
+        this.createdAt = user.getCreatedAt() != null ? String.valueOf(user.getCreatedAt().getTime()) : null;
+        this.updatedAt = user.getUpdatedAt() != null ? String.valueOf(user.getUpdatedAt().getTime()) : null;
         this.roles = user.getRoles().stream().map(Object::toString).collect(Collectors.toList());
     }
 
