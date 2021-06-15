@@ -24,6 +24,10 @@ public class Project implements Serializable {
     private String description;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "project_developers",
+    joinColumns = {@JoinColumn(name = "fk_developer_id")},
+    inverseJoinColumns = {@JoinColumn(name = "fk_project_id")})
+
     private List<Developer> developers;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "billedBy")
