@@ -26,6 +26,7 @@ public class ApplicationConfig extends Application {
         resources.add(errorhandling.API_ExceptionMapper.class);
         resources.add(errorhandling.GenericExceptionMapper.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
+        resources.add(rest.DeveloperResorce.class);
         resources.add(rest.UtilResource.class);
         resources.add(rest.MeResource.class);
         resources.add(rest.UserResource.class);

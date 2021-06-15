@@ -21,7 +21,7 @@ public class ProjectFacade {
      * @Param _emf
      * @Return the instance of this facade
      */
-    public static ProjectFacade getInstance(EntityManagerFactory _emf){
+    public static ProjectFacade getProjectFacade(EntityManagerFactory _emf){
         if (instance == null){
             emf = _emf;
             instance = new ProjectFacade();

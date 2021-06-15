@@ -22,7 +22,7 @@ public class DeveloperFacade {
      * @Param _emf
      * @return the instance of this facade.
      */
-    public static DeveloperFacade getInstance(EntityManagerFactory _emf){
+    public static DeveloperFacade getDeveloperFacade(EntityManagerFactory _emf){
         if (instance == null){
             emf = _emf;
             instance = new DeveloperFacade();
