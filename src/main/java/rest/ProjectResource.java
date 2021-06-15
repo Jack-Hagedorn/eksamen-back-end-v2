@@ -38,7 +38,7 @@ public class ProjectResource {
     }
 
     @PUT
-    @Path("/{projectid}")
+    @Path("{projectid}")
     public String addDeveloper(@PathParam("projectid") String project, String developer){
         FACADE.addDeveloper(project, developer);
         return "Developer Added";
