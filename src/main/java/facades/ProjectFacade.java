@@ -2,7 +2,6 @@ package facades;
 
 import dtos.DeveloperDTO;
 import dtos.ProjectDTO;
-import entities.Developer;
 import entities.Project;
 
 import javax.persistence.EntityManager;
@@ -57,19 +56,18 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public void addDeveloperTooProjects(Project project, Developer developer) throws IllegalArgumentException{
+    public void addDeveloper(long projectId, Developer developer){
         EntityManager em = emf.createEntityManager();
 
+        Project project = em.find(Project.class,projectId);
+
         try{
-            Project query = em.find(Project.class, project);
-            if (query == null){
-                em.getTransaction().begin();
-                project.addDeveloper(developer);
-                em.merge(developer);
-                em.getTransaction().commit();
-            }
+            em.getTransaction().begin();
+            project.addDeveloper(developer);
+            em.getTransaction().commit();
         } finally {
             em.close();
         }
+
     }
 }
