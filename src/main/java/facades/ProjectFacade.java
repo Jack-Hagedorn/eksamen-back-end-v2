@@ -60,8 +60,6 @@ public class ProjectFacade {
     public void addDeveloper(String projectid, String developerId){
         EntityManager em = emf.createEntityManager();
 
-        Project project = em.find(Project.class, Long.parseLong(projectid));
-
         try{
 
             TypedQuery<Project> qP = em.createQuery("SELECT p FROM Project p WHERE p.id =:id", Project.class);
@@ -70,11 +68,11 @@ public class ProjectFacade {
             qD.setParameter("id", developerId);
 
             em.getTransaction().begin();
-            if(project.getDevelopers().contains(qD.getSingleResult())){
+            if(qP.getSingleResult().getDevelopers().contains(qD.getSingleResult())){
                 em.close();
             } else {
-                project.addDeveloper(qD.getSingleResult());
-                em.merge(project);
+                qP.getSingleResult().addDeveloper(qD.getSingleResult());
+                em.merge(qP.getSingleResult());
                 em.getTransaction().commit();
             }
         } finally {
