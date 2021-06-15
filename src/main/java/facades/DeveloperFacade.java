@@ -53,15 +53,13 @@ public class DeveloperFacade {
         }
     }
 
-    public DeveloperDTO addDeveloper(String name, String email, String phone, int billingPrHour){
+    public void addDeveloper(String name, String email, String phone, int billingPrHour){
         EntityManager em = emf.createEntityManager();
         try{
             Developer developer = new Developer(name, email, phone, billingPrHour);
             em.getTransaction().begin();
             em.persist(developer);
             em.getTransaction().commit();
-
-            return new DeveloperDTO(developer);
         } finally {
             em.close();
         }
