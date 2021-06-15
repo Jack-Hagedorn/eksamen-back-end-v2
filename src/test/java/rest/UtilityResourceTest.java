@@ -65,6 +65,9 @@ public class UtilityResourceTest {
             //Delete existing database data.
             em.createQuery("delete from User").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
+            em.createQuery("delete from Developer").executeUpdate();
+            em.createQuery("delete from Project").executeUpdate();
+            em.createQuery("delete from ProjectHours").executeUpdate();
 
             em.getTransaction().commit();
 

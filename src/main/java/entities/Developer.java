@@ -24,10 +24,10 @@ public class Developer  implements Serializable {
     private String phone;
     private int billingPrHour;
 
-    @ManyToMany(mappedBy = "developers")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Project> projects;
 
-    @ManyToMany(mappedBy = "records")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "records")
     private List<ProjectHours> projectHours;
 
     public Developer(String name, String email, String phone, int billingPrHour) {

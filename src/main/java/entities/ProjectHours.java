@@ -22,11 +22,11 @@ public class ProjectHours implements Serializable {
     private int userStory;
     private String description;
 
-    @ManyToMany()
-    private List<Developer> records;
+    @ManyToOne()
+    private Developer records;
 
-    @ManyToMany()
-    private List<Project> billedBy;
+    @ManyToOne()
+    private Project billedBy;
 
     public ProjectHours(int hoursSpent, int userStory, String description) {
         this.hoursSpent = hoursSpent;

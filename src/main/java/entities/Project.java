@@ -22,10 +22,10 @@ public class Project implements Serializable {
     private String name;
     private String description;
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Developer> developers;
 
-    @ManyToMany(mappedBy = "billedBy")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "billedBy")
     private List<ProjectHours> projectHours;
 
     public Project(String name, String description) {
