@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,6 +32,7 @@ public class Project implements Serializable {
     public Project(String name, String description) {
         this.name = name;
         this.description = description;
+        this.developers = new ArrayList<>();
     }
 
     public String getName() {
