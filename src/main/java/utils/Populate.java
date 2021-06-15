@@ -2,10 +2,15 @@ package utils;
 
 
 import com.google.common.base.Strings;
+import dtos.DeveloperDTO;
+import dtos.ProjectDTO;
+import entities.Developer;
+import entities.Project;
 import facades.DeveloperFacade;
 import facades.ProjectFacade;
 import facades.UserFacade;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,5 +91,7 @@ public class Populate {
 
         return true;
     }
+
+
 
 }

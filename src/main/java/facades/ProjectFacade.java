@@ -57,16 +57,19 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public ProjectDTO addDeveloper(Project project, Developer developer){
+    public void addDeveloperTooProjects(Project project, Developer developer) throws IllegalArgumentException{
         EntityManager em = emf.createEntityManager();
 
         try{
-            em.getTransaction().begin();
-            em.merge(project.addDeveloper(developer));
-            em.getTransaction().commit();
+            Project query = em.find(Project.class, project);
+            if (query == null){
+                em.getTransaction().begin();
+                project.addDeveloper(developer);
+                em.merge(developer);
+                em.getTransaction().commit();
+            }
         } finally {
             em.close();
         }
-        return new ProjectDTO(project);
     }
 }
