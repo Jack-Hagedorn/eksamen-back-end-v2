@@ -1,6 +1,9 @@
 package rest;
 
+import dtos.ProjectDTO;
+import entities.Project;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -15,6 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,12 +95,24 @@ class ProjectResourceTest {
     }
 
     @Test
-    void getAllProjects() {
+    public void getAllProjects() {
         given()
                 .contentType("application/json")
                 .when()
                 .get("/project/all").then()
                 .statusCode(200)
                 .body("data", hasSize(2));
+    }
+
+    @Test
+    public void addProject(){
+        given()
+                .contentType(ContentType.JSON)
+                .body(new ProjectDTO(new Project("My new Project", "This is the new project test")))
+                .when()
+                .post("project")
+                .then()
+                .body("name", equalTo("My new Project"))
+                .body("description", equalTo("This is the new project test"));
     }
 }
