@@ -63,6 +63,10 @@ public class ProjectFacade {
         Project project = em.find(Project.class,projectId);
         Developer developer = em.find(Developer.class, developerId);
 
+        if(project.getDevelopers().contains(developer)){
+            em.close();
+        }
+
         try{
             em.getTransaction().begin();
             project.addDeveloper(developer);

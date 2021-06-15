@@ -38,7 +38,6 @@ public class ProjectResource {
     }
 
     @PUT
-    @RolesAllowed("admin")
     @Path("/{projectid}")
     public String addDeveloper(@PathParam("projectid") long project, long developer){
         FACADE.addDeveloper(project, developer);
