@@ -66,13 +66,15 @@ public class ProjectFacade {
             qP.setParameter("id", Long.parseLong(projectid));
             TypedQuery<Developer> qD = em.createQuery("SELECT d FROM Developer d where d.id =:id", Developer.class);
             qD.setParameter("id", developerId.getId());
+            Project p = qP.getSingleResult();
+            Developer d = qD.getSingleResult();
 
             em.getTransaction().begin();
-            if(qP.getSingleResult().getDevelopers().contains(qD.getSingleResult())){
+            if(p.getDevelopers().contains(d)){
                 em.close();
             } else {
-                qP.getSingleResult().addDeveloper(qD.getSingleResult());
-                em.merge(qP.getSingleResult());
+                p.addDeveloper(d);
+                em.merge(p);
                 em.getTransaction().commit();
             }
         } finally {
