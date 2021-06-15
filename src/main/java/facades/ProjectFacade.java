@@ -57,7 +57,7 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public void addDeveloper(long projectId, String developerId){
+    public void addDeveloper(String projectId, String developerId){
         EntityManager em = emf.createEntityManager();
 
         Project project = em.find(Project.class,projectId);
