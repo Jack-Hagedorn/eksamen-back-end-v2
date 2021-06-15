@@ -2,6 +2,7 @@ package utils;
 
 
 import com.google.common.base.Strings;
+import facades.DeveloperFacade;
 import facades.UserFacade;
 
 import javax.persistence.EntityManagerFactory;
@@ -25,6 +26,8 @@ public class Populate {
         List<String> populated = new ArrayList<>();
         if(populateUsers())
             populated.add("users");
+        if(populateDevelopers())
+            populated.add("developers");
 
         return populated;
     }
@@ -55,6 +58,17 @@ public class Populate {
 
         userFacade._create("user", password_user, new ArrayList<>());
         userFacade._create("admin", password_admin, Collections.singletonList("admin"));
+
+        return true;
+    }
+
+    public boolean populateDevelopers() throws IllegalArgumentException {
+        DeveloperFacade developerFacade = DeveloperFacade.getDeveloperFacade(this.emf);
+
+        if(!developerFacade.getDevelopers().isEmpty()) return false;
+
+        developerFacade.addDeveloper("Alpha Developer", "alpha@developer.test", "12345678", 180);
+        developerFacade.addDeveloper("Beta Developer", "beta@developer.test", "87654321", 150);
 
         return true;
     }
