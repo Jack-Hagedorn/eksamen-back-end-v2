@@ -80,7 +80,7 @@ public class UtilityResourceTest {
                 .when()
                 .get("/util/populate").then()
                 .statusCode(200)
-                .body("populated", hasSize(2));
+                .body("populated", hasSize(3));
     }
 
 

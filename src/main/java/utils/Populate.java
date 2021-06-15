@@ -3,6 +3,7 @@ package utils;
 
 import com.google.common.base.Strings;
 import facades.DeveloperFacade;
+import facades.ProjectFacade;
 import facades.UserFacade;
 
 import javax.persistence.EntityManagerFactory;
@@ -28,6 +29,8 @@ public class Populate {
             populated.add("users");
         if(populateDevelopers())
             populated.add("developers");
+        if(populateProjects())
+            populated.add("projects");
 
         return populated;
     }
@@ -69,6 +72,17 @@ public class Populate {
 
         developerFacade.addDeveloper("Alpha Developer", "alpha@developer.test", "12345678", 180);
         developerFacade.addDeveloper("Beta Developer", "beta@developer.test", "87654321", 150);
+
+        return true;
+    }
+
+    public boolean populateProjects() throws IllegalArgumentException{
+        ProjectFacade projectFacade = ProjectFacade.getProjectFacade(this.emf);
+
+        if(!projectFacade.getProjects().isEmpty()) return false;
+
+        projectFacade.addProject("Big project", "This project is the big one");
+        projectFacade.addProject("Small project", "This project is the small project");
 
         return true;
     }
