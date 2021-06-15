@@ -2,6 +2,7 @@ package facades;
 
 import dtos.DeveloperDTO;
 import dtos.ProjectDTO;
+import entities.Developer;
 import entities.Project;
 
 import javax.persistence.EntityManager;
