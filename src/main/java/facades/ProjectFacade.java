@@ -57,22 +57,26 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public void addDeveloper(String projectname, String developerId){
+    public void addDeveloper(String projectid, String developerId){
         EntityManager em = emf.createEntityManager();
 
-        Project project = em.find(Project.class, Long.parseLong(projectname));
-        Developer developer = em.find(Developer.class, developerId);
-
-        if(project.getDevelopers().contains(developer)){
-            em.close();
-        }
+        Project project = em.find(Project.class, Long.parseLong(projectid));
 
         try{
-            TypedQuery<Developer> q = em.createQuery("SELECT d FROM Developer d where d.id =:id", Developer.class);
+
+            TypedQuery<Project> qP = em.createQuery("SELECT p FROM Project p WHERE p.id =:id", Project.class);
+            qP.setParameter("id", projectid);
+            TypedQuery<Developer> qD = em.createQuery("SELECT d FROM Developer d where d.id =:id", Developer.class);
+            qD.setParameter("id", developerId);
+
             em.getTransaction().begin();
-            project.addDeveloper(q.getSingleResult());
-            em.merge(project);
-            em.getTransaction().commit();
+            if(project.getDevelopers().contains(qD.getSingleResult())){
+                em.close();
+            } else {
+                project.addDeveloper(qD.getSingleResult());
+                em.merge(project);
+                em.getTransaction().commit();
+            }
         } finally {
             em.close();
         }
