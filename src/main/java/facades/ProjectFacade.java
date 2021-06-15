@@ -57,14 +57,16 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public void addDeveloper(long projectId, Developer developer){
+    public void addDeveloper(long projectId, long developerId){
         EntityManager em = emf.createEntityManager();
 
         Project project = em.find(Project.class,projectId);
+        Developer developer = em.find(Developer.class, developerId);
 
         try{
             em.getTransaction().begin();
             project.addDeveloper(developer);
+            em.merge(project);
             em.getTransaction().commit();
         } finally {
             em.close();
