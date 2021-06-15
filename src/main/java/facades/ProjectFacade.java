@@ -57,10 +57,10 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public void addDeveloper(String projectId, String developerId){
+    public void addDeveloper(String projectname, String developerId){
         EntityManager em = emf.createEntityManager();
 
-        Project project = em.find(Project.class,projectId);
+        Project project = em.find(Project.class, Long.parseLong(projectname));
         Developer developer = em.find(Developer.class, developerId);
 
         if(project.getDevelopers().contains(developer)){
