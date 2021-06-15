@@ -57,4 +57,20 @@ public class ProjectHours implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Developer getRecords() {
+        return records;
+    }
+
+    public void setRecords(Developer records) {
+        this.records = records;
+    }
+
+    public Project getBilledBy() {
+        return billedBy;
+    }
+
+    public void setBilledBy(Project billedBy) {
+        this.billedBy = billedBy;
+    }
 }

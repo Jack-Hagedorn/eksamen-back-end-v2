@@ -54,4 +54,21 @@ public class Project implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<Developer> getDevelopers() {
+        return developers;
+    }
+
+    public Developer addDeveloper(Developer developer) {
+        this.developers.add(developer);
+        return developer;
+    }
+
+    public List<ProjectHours> getProjectHours() {
+        return projectHours;
+    }
+
+    public void setProjectHours(List<ProjectHours> projectHours) {
+        this.projectHours = projectHours;
+    }
 }

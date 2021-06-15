@@ -68,4 +68,20 @@ public class Developer  implements Serializable {
     public void setBillingPrHour(int billingPrHour) {
         this.billingPrHour = billingPrHour;
     }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public List<ProjectHours> getProjectHours() {
+        return projectHours;
+    }
+
+    public void setProjectHours(List<ProjectHours> projectHours) {
+        this.projectHours = projectHours;
+    }
 }
