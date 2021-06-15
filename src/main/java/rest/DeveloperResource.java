@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("developer")
-public class DeveloperResorce {
+public class DeveloperResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
 
@@ -27,5 +27,10 @@ public class DeveloperResorce {
     @Path("all")
     public Response getAllDevelopers(){
         return Response.ok(GSON.toJson(FACADE.getDevelopers())).build();
+    }
+
+    @GET
+    public String serverIsUp() {
+        return "{\"msg\":\"Your Person API is up and running\"}";
     }
 }
