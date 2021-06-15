@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.ProjectDTO;
+import entities.Developer;
 import facades.ProjectFacade;
 import utils.EMF_Creator;
 
@@ -40,7 +41,8 @@ public class ProjectResource {
     @PUT
     @Path("{projectid}")
     public String addDeveloper(@PathParam("projectid") String project, String developer){
-        FACADE.addDeveloper(project, developer);
+        Developer d = GSON.fromJson(developer, Developer.class);
+        FACADE.addDeveloper(project, d);
         return "Developer Added";
     }
 
