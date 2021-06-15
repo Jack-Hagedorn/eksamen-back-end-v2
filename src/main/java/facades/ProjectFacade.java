@@ -63,9 +63,9 @@ public class ProjectFacade {
         try{
 
             TypedQuery<Project> qP = em.createQuery("SELECT p FROM Project p WHERE p.id =:id", Project.class);
-            qP.setParameter("id", projectid);
+            qP.setParameter("id", Long.parseLong(projectid));
             TypedQuery<Developer> qD = em.createQuery("SELECT d FROM Developer d where d.id =:id", Developer.class);
-            qD.setParameter("id", developerId);
+            qD.setParameter("id", Long.parseLong(developerId));
 
             em.getTransaction().begin();
             if(qP.getSingleResult().getDevelopers().contains(qD.getSingleResult())){
