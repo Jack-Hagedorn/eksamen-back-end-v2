@@ -89,7 +89,6 @@ class DeveloperResourceTest {
         given().when().get("/developer").then().statusCode(200);
     }
 
-    @Disabled
     @Test
     void getAllDevelopers() {
         given()
