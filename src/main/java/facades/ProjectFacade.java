@@ -68,8 +68,9 @@ public class ProjectFacade {
         }
 
         try{
+            TypedQuery<Developer> q = em.createQuery("SELECT d FROM Developer d where d.id =:id", Developer.class);
             em.getTransaction().begin();
-            project.addDeveloper(developer);
+            project.addDeveloper(q.getSingleResult());
             em.merge(project);
             em.getTransaction().commit();
         } finally {
