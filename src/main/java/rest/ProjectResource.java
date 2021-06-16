@@ -41,11 +41,11 @@ public class ProjectResource {
 
     @PUT
     @Path("/{projectid}")
-    public String addDeveloper(@PathParam("projectid") String project, String developer){
+    public Response addDeveloper(@PathParam("projectid") String project, String developer){
         Developer d = GSON.fromJson(developer, Developer.class);
         Project p = GSON.fromJson(project, Project.class);
         FACADE.addDeveloper(p, d);
-        return "Developer Added";
+        return Response.ok(GSON.toJson(p)).build();
     }
 
 }
