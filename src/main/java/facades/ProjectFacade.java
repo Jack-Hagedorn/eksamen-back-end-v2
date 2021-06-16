@@ -57,13 +57,13 @@ public class ProjectFacade {
         return new ProjectDTO(project);
     }
 
-    public void addDeveloper(Project project, Developer developer){
+    public void addDeveloper(long projectid, Developer developer){
         EntityManager em = emf.createEntityManager();
 
         try{
             em.getTransaction().begin();
             TypedQuery<Project> qP = em.createQuery("SELECT p FROM Project p WHERE p.id =:id", Project.class);
-            qP.setParameter("id", project.getId());
+            qP.setParameter("id", projectid);
             TypedQuery<Developer> qD = em.createQuery("SELECT d FROM Developer d where d.id =:id", Developer.class);
             qD.setParameter("id", developer.getId());
             Project p = qP.getSingleResult();

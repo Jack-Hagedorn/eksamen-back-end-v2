@@ -88,10 +88,10 @@ class ProjectFacadeTest {
         try{
             em.getTransaction().begin();
 
-            TypedQuery<Project> projectQuery = em.createQuery("SELECT p FROM Project p where p=:id", Project.class);
-            projectQuery.setParameter("id", p1);
-            TypedQuery<Developer> developerQuery = em.createQuery("SELECT d FROM Developer d where d=:id", Developer.class);
-            developerQuery.setParameter("id", d1);
+            TypedQuery<Project> projectQuery = em.createQuery("SELECT p FROM Project p where p.id=:id", Project.class);
+            projectQuery.setParameter("id", p1.getId());
+            TypedQuery<Developer> developerQuery = em.createQuery("SELECT d FROM Developer d where d.id=:id", Developer.class);
+            developerQuery.setParameter("id", d1.getId());
             Project p = projectQuery.getSingleResult();
             Developer d = developerQuery.getSingleResult();
 
