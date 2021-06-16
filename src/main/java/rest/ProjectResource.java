@@ -40,7 +40,7 @@ public class ProjectResource {
     }
 
     @PUT
-    @Path("{projectid}")
+    @Path("/{projectid}")
     public String addDeveloper(@PathParam("projectid") String project, String developer){
         Developer d = GSON.fromJson(developer, Developer.class);
         Project p = GSON.fromJson(project, Project.class);
